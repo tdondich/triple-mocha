@@ -1,0 +1,35 @@
+{
+  "name": "triple-mocha",
+  "version": "1.0.0",
+  "description": "A mocha test runner that runs tests in parallel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tdondich/triple-mocha"
+  },
+  "keywords": [
+    "mocha",
+    "test",
+    "bdd",
+    "tdd"
+  ],
+  "author": "Taylor Dondich <taylor@dondich.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tdondich/triple-mocha/issues"
+  },
+  "homepage": "https://github.com/tdondich/triple-mocha",
+  "dependencies": {
+    "optimist": "0.6.x",
+    "recursive-readdir": "1.2.x",
+    "mocha": "1.21.x",
+    "async": "0.9.x",
+    "pluralize": "1.0.x"
+  },
+  "devDependencies": {
+    "chai": "1.9.x"
+  }
+}

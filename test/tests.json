@@ -1,0 +1,45 @@
+{
+	"suites": [
+		{
+			"name": "suite1",
+			"path": "test/suite1",
+			"timeout": 2000,
+			"env": {
+				"message": "Inside suite1"
+			}
+		},
+		{
+			"name": "suite2",
+			"path": "test/suite2",
+			"timeout": 2000,
+			"env": {
+				"message": "Inside suite2"
+			}
+		},
+		{
+			"name": "suite3",
+			"path": "test/suite3",
+			"timeout": 2000,
+			"env": {
+				"message": "Inside suite3"
+			}
+		},
+		{
+			"name": "suite4",
+			"path": "test/suite4",
+			"timeout": 2000,
+			"env": {
+				"message": "Inside suite4"
+			}
+		},
+		{
+			"name": "suite5",
+			"path": "test/suite5",
+			"require": "./test/requireTest",
+			"timeout": 2000,
+			"env": {
+				"message": "Inside suite5"
+			}
+		}
+	]
+}
