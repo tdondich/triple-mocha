@@ -8,6 +8,10 @@ var fs = require('fs');
 var async = require('async');
 var Mocha = require('mocha');
 var pluralize = require('pluralize');
+var moment = require('moment');
+
+// Load moment duration format plugin
+require("moment-duration-format");
 
 var configFile = argv.config;
 if(configFile.indexOf(path.sep) !== 0) {
@@ -47,28 +51,59 @@ async.each(config.suites, function(data, callback) {
 });
 
 function runTests(suites) {
-	var failures = [];
+	var failures = null;
+	var totalPasses = 0;
+	var totalFailures = 0;
 	async.each(suites, function(data, callback) {
+		var suite = (data.name || data.path);
+		var start = new moment();
 		var child = require('child_process').fork(path.normalize(__dirname + "/../lib/runner"), {
 			"env": data.env || {},
-			"silent": false
+			"silent": true
+		});
+		child.on('message', function(message) {
+			if(message.type == 'start') {
+				console.log("Suite " + suite + " starting...");
+			}
+			if(message.type == 'fail') {
+				if(failures == null) {
+					failures = [];
+				}
+				if(failures[suite] == undefined) {
+					failures[suite] = [];
+				}
+				failures[suite][failures[suite].length] = {
+					test: message.test,
+					err: message.err
+				};
+				totalFailures = totalFailures + 1;
+			}
+			else if(message.type == 'pass') {
+				totalPasses = totalPasses + 1;
+			}
+			else if(message.type == 'end') {
+				var end = new moment();
+				var duration = moment.duration(end.valueOf() - start.valueOf()).format("D [days], H [hours] m [minutes] s [seconds] S [ms]");
+				console.log("Suite: " + suite + " completed with " + message.passes + " " + pluralize("pass", message.passes) + " and " + message.failures + " " + pluralize("failure", message.failures) + " in " + duration);
+			}
 		});
 		child.on('exit', function(code, signal) {
-			if(code !== 0) {
-				failures[failures.length] = code + " " + pluralize("failure", code) + " in suite: " + (data.name || data.path);
-			}
+			// Truly only call the callback if we are indeed done.
 			return callback();
 		});
 		// Send it's configuration
 		child.send(data);
 	}, function(err) {
-		if(failures.length == 0) {
-			console.log("All test suites passed successfully.");
-		}
-		else {
-			for (var i = failures.length - 1; i >= 0; i--) {
-				console.log(failures[i]);
-			};
+		console.log("All suites completed with " + totalPasses + " " + pluralize("pass", totalPasses) + " and " + totalFailures + " " + pluralize("failure", totalFailures));
+		if(failures !== null) {
+			console.log("\nFailures: ");
+			for(suite in failures) {
+				console.log(suite);
+				for (var i = failures[suite].length - 1; i >= 0; i--) {
+					console.log((i + 1) + ") " + failures[suite][i].test);
+					console.log(failures[suite][i].err.stack + "\n");
+				};
+			}
 		}
 		process.exit(failures.length);
 	});
