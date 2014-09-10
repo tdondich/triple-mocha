@@ -4,7 +4,7 @@
   "description": "A mocha test runner that runs tests in parallel",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "make test"
   },
   "repository": {
     "type": "git",
@@ -23,13 +23,13 @@
   },
   "homepage": "https://github.com/tdondich/triple-mocha",
   "dependencies": {
-    "optimist": "0.6.x",
-    "recursive-readdir": "1.2.x",
-    "mocha": "1.21.x",
-    "async": "0.9.x",
-    "pluralize": "1.0.x"
+    "async": "0.9.0",
+    "mocha": "1.21.4",
+    "optimist": "0.6.1",
+    "pluralize": "1.0.1",
+    "recursive-readdir": "1.2.0"
   },
   "devDependencies": {
-    "chai": "1.9.x"
+    "chai": "1.9.1"
   }
 }
