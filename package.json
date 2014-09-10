@@ -1,6 +1,6 @@
 {
   "name": "triple-mocha",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A mocha test runner that runs tests in parallel",
   "main": "index.js",
   "scripts": {

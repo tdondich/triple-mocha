@@ -30,9 +30,7 @@ async.each(config.suites, function(data, callback) {
 			data.files[i] = path.normalize(process.cwd() + path.sep + data.files[i]);
 		};
 		// Resolve require if it exists
-		console.log(data);
 		if(data.require !== undefined) {
-			console.log("GRR: " + data.require);
 			if(data.require.indexOf(path.sep) !== 0) {
 				data.require = path.normalize(process.cwd() + path.sep + data.require);
 			}
