@@ -30,20 +30,20 @@ async.each(config.suites, function(data, callback) {
 			data.files[i] = path.normalize(process.cwd() + path.sep + data.files[i]);
 		};
 		// Resolve require if it exists
+		console.log(data);
 		if(data.require !== undefined) {
+			console.log("GRR: " + data.require);
 			if(data.require.indexOf(path.sep) !== 0) {
 				data.require = path.normalize(process.cwd() + path.sep + data.require);
 			}
 		}
 		return callback();
 	} catch(ex) {
+		console.log("Fatal Error: " + ex);
+		process.exit(-1);
 		return callback(ex);
 	}
 }, function(err) {
-	console.log("Completed");
-	console.log(config.suites);
-
-	console.log("Building tests");
 	runTests(config.suites);
 
 });
@@ -51,7 +51,7 @@ async.each(config.suites, function(data, callback) {
 function runTests(suites) {
 	var failures = [];
 	async.each(suites, function(data, callback) {
-		var child = require('child_process').fork('lib/runner', {
+		var child = require('child_process').fork(path.normalize(__dirname + "/../lib/runner"), {
 			"env": data.env || {},
 			"silent": false
 		});
