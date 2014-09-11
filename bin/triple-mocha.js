@@ -105,6 +105,6 @@ function runTests(suites) {
 				};
 			}
 		}
-		process.exit(failures.length);
+		process.exit(totalFailures);
 	});
 }
